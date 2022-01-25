@@ -1,0 +1,30 @@
+{
+    "name": "vgplay/reward",
+    "description": "reward store",
+    "type": "library",
+    "require": {
+        "laravel/framework": "^6|^7|^8",
+        "vgplay/contracts": "^1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vgplay\\Reward\\": "src/",
+            "Vgplay\\Reward\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dung199551",
+            "email": "dung199551@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vgplay\\Reward\\RewardServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
