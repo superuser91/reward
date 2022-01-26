@@ -91,10 +91,22 @@ class Product extends Model implements ProductContract
 
     protected function parseCondition($f, $o, $c)
     {
-        try {
-            return eval(sprintf('return %s %s %s;', $f, $o, $c));
-        } catch (\Exception $e) {
-            throw new \Exception(sprintf('Error at %s %s %s', $f, $o, $c));
+        switch ($o) {
+            case "=":
+            case "==":
+                return $f == $c;
+            case ">":
+                return $f > $c;
+            case ">=":
+                return $f >= $c;
+            case "<":
+                return $f < $c;
+            case "<=":
+                return $f <= $c;
+            case "!=":
+                return $f != $c;
+            default:
+                throw new \Exception(sprintf('Error at %s %s %s', $f, $o, $c));
         }
     }
 
