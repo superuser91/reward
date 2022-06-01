@@ -69,7 +69,7 @@ class Product extends Model implements ProductContract
         return DB::transaction(function () use ($player, $data) {
             $player->payForReward($this);
 
-            Transaction::create([
+            $transaction = Transaction::create([
                 'user_id' => $player->getId(),
                 'product_id' => $this->id,
                 'amount' => $this->price,
@@ -77,8 +77,10 @@ class Product extends Model implements ProductContract
             ]);
 
             if ($this->purchaseable instanceof Deliverable) {
-                return $this->purchaseable->deliver($player, $data);
+                $this->purchaseable->deliver($player, $data);
             }
+
+            return $transaction;
         });
     }
 

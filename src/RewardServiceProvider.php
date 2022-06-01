@@ -20,11 +20,15 @@ class RewardServiceProvider extends ServiceProvider
         ];
     }
 
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'vgplay');
+    }
+
     public function boot()
     {
         $this->registerPolicies();
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'vgplay');
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
