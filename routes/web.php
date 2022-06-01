@@ -5,8 +5,8 @@ use Vgplay\Reward\Controllers\RewardController;
 
 Route::middleware('web')->group(function () {
     Route::group([
-        'prefix' => config('vgplay.news.prefix'),
-        'middleware' => config('vgplay.news.middleware')
+        'prefix' => config('vgplay.products.prefix'),
+        'middleware' => config('vgplay.products.middleware')
     ], function () {
         Route::resource('rewards', RewardController::class)->except('show');
     });

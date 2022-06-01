@@ -58,16 +58,17 @@ class ExportLog extends Command
 
         $fp = fopen(storage_path($filename = 'export_log.csv'), 'w');
         fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
-        fputcsv($fp, ['Time', 'GAME ID', 'VGP ID', 'Item', 'Server', 'Nhân vật']);
+        fputcsv($fp, ['Time', 'GAME ID', 'VGP ID', 'Item', 'Số lượng', 'Server', 'Nhân vật']);
 
         foreach ($transactions as $transaction) {
             fputcsv($fp, [
                 $transaction->created_at,
                 $transaction->product->shop->game_id,
-                $transaction->vgp_id,
-                $transaction->reward->name,
-                $transaction->server,
-                $transaction->character
+                $transaction->user_id,
+                $transaction->product->name,
+                $transaction->quantity,
+                isset($transaction->extras['server']['id']) ?  $transaction->extras['server']['id'] : '--',
+                isset($transaction->extras['character']['id']) ?  $transaction->extras['character']['id'] : '--',
             ]);
             $bar->advance();
         }

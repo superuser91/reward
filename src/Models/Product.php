@@ -6,6 +6,8 @@ use Vgplay\Reward\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Vgplay\Contracts\Deliverable;
 use Vgplay\Contracts\Player;
 use Vgplay\Contracts\Product as ProductContract;
@@ -43,6 +45,10 @@ class Product extends Model implements ProductContract
         'stats' => 'array',
     ];
 
+    protected $appends = [
+        'purchased'
+    ];
+
     public function purchaseable()
     {
         return $this->morphTo();
@@ -50,6 +56,19 @@ class Product extends Model implements ProductContract
 
     public function purchase(Player $player, array $data)
     {
+        $validator = Validator::make($data, [
+            'quantity' => 'required|integer',
+            'server' => 'nullable|array',
+            'server.id' => 'nullable',
+            'server.name' => 'nullable',
+            'character' => 'nullable|array',
+            'character.id' => 'nullable'
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         if (!is_null($this->available_from) && now() < $this->available_from) {
             throw new ProductNotAvailableYetException();
         }
@@ -58,7 +77,7 @@ class Product extends Model implements ProductContract
             throw new ProductOutOfStockException();
         }
 
-        if (!is_null($this->limit) && $this->boughtCount($player) >= $this->limit) {
+        if (!is_null($this->limit) && ((int) $data['quantity'] + $this->boughtCount($player)) > $this->limit) {
             throw new BoughtCountLimitExceededException();
         }
 
@@ -67,13 +86,15 @@ class Product extends Model implements ProductContract
         }
 
         return DB::transaction(function () use ($player, $data) {
-            $player->payForReward($this);
+            $player->pay($this->price * (int) $data['quantity'], $this->payment_unit);
 
             $transaction = Transaction::create([
                 'user_id' => $player->getId(),
                 'product_id' => $this->id,
                 'amount' => $this->price,
-                'payment_unit' => $this->payment_unit
+                'quantity' => (int) $data['quantity'],
+                'payment_unit' => $this->payment_unit,
+                'extras' => $data
             ]);
 
             if ($this->purchaseable instanceof Deliverable) {
@@ -120,6 +141,13 @@ class Product extends Model implements ProductContract
     public function boughtCount(Player $player)
     {
         return Transaction::where('user_id', $player->getId())
+            ->where('product_id', $this->id)
+            ->count();
+    }
+
+    public function getPurchasedAttribute()
+    {
+        return Transaction::where('user_id', auth(config('vgplay.products.buyer.auth'))->id())
             ->where('product_id', $this->id)
             ->count();
     }

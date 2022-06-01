@@ -14,8 +14,14 @@ class Transaction extends Model
         'user_id',
         'status',
         'note',
+        'quantity',
         'amount',
         'payment_unit',
+        'extras'
+    ];
+
+    protected $casts = [
+        'extras' => 'json'
     ];
 
     public function product()

@@ -19,8 +19,10 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('status')->default('SUCCESS');
             $table->string('note')->nullable();
+            $table->integer('quantity');
             $table->double('amount');
             $table->string('payment_unit');
+            $table->longText('extras')->nullable();
             $table->timestamps();
         });
     }

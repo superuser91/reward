@@ -1,7 +1,12 @@
 <?php
 
 return [
-    'prefix' => '/admin',
-    'middleware' => ['auth:admin'],
-    'policy' => 'App\\Policies\\ProductPolicy'
+    'products' => [
+        'buyer' => [
+            'auth' => 'web'
+        ],
+        'prefix' => '/admin',
+        'middleware' => ['auth:admin'],
+        'policy' => 'App\\Policies\\ProductPolicy',
+    ]
 ];
