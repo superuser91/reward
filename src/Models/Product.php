@@ -142,13 +142,13 @@ class Product extends Model implements ProductContract
     {
         return Transaction::where('user_id', $player->getId())
             ->where('product_id', $this->id)
-            ->count();
+            ->sum('quantity');
     }
 
     public function getPurchasedAttribute()
     {
         return Transaction::where('user_id', auth(config('vgplay.products.buyer.auth'))->id())
             ->where('product_id', $this->id)
-            ->count();
+            ->sum('quantity');
     }
 }
