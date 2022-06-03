@@ -43,6 +43,30 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="available_from">Thời gian bắt đầu đổi</label>
+                        <input type="text" class="form-control @error('available_from') is-invalid @enderror"
+                            id="available_from" name="available_from" aria-describedby="available_from"
+                            value="{{ old('available_from', $reward->available_from) }}">
+                        @error('available_from')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="available_to">Hạn cuối để đổi</label>
+                        <input type="text" class="form-control @error('available_to') is-invalid @enderror"
+                            id="available_to" name="available_to" aria-describedby="available_to"
+                            value="{{ old('available_to', $reward->available_to) }}">
+                        @error('available_to')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="picture">Ảnh minh hoạ</label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="ckfinder-picture" name="picture"
@@ -57,7 +81,7 @@
 
                     </div>
 
-                    <div class="custom-control custom-checkbox my-3">
+                    {{-- <div class="custom-control custom-checkbox my-3">
                         <input type="checkbox" class="custom-control-input" id="is_personal" name="is_personal"
                             @if (old('is_personal', $reward->is_personal)) checked @endif>
                         <label class="custom-control-label" for="is_personal">
@@ -68,7 +92,20 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    </div>
+                    </div> --}}
+
+                    <div class="custom-control custom-checkbox my-3">
+                      <input type="checkbox" class="custom-control-input" id="is_publish" name="is_publish"
+                          @if (old('is_publish', $reward->is_publish)) checked @endif>
+                      <label class="custom-control-label" for="is_publish">
+                          Publish
+                      </label>
+                      @error('is_publish')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                  </div>
 
                     <div class="form-group">
                         <button class="btn btn-success">Lưu lại</button>
