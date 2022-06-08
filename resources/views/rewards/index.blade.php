@@ -26,9 +26,6 @@
                                         style="max-width:75px">
                                 </td>
                                 <td>{{ substr(strrchr($item->purchaseable_type, '\\'), 1) }}</td>
-                                <td>
-                                    {{ $item->store_id }}
-                                </td>
                                 <td>{{ number_format($item->price) }}</td>
                                 <td>{{ $item->limit ?? '--' }}</td>
                                 <td>
