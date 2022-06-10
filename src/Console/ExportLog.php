@@ -12,7 +12,7 @@ class ExportLog extends Command
      *
      * @var string
      */
-    protected $signature = 'export:log {game} {type?} ';
+    protected $signature = 'export:log {game} {type?} {date?} ';
 
     /**
      * The console command description.
@@ -51,6 +51,10 @@ class ExportLog extends Command
                     $product->where('type', $this->argument('type'));
                 });
             })
+            ->when($this->argument('date'), function ($q) {
+                $q->whereDate('created_at', $this->argument('date'));
+            })
+            ->orderBy('created_at', 'ASC')
             ->orderBy('user_id', 'ASC')
             ->get();
 
