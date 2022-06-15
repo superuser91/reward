@@ -57,7 +57,7 @@ class Product extends Model implements ProductContract
     public function purchase(Player $player, array $data)
     {
         $validator = Validator::make($data, [
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
             'server' => 'nullable|array',
             'server.id' => 'nullable',
             'server.name' => 'nullable',
@@ -69,7 +69,7 @@ class Product extends Model implements ProductContract
             throw new ValidationException($validator);
         }
 
-        if (!is_null($this->available_from) && now() < $this->available_from) {
+        if ((!is_null($this->available_from) && now() < $this->available_from) || !$this->is_publish) {
             throw new ProductNotAvailableYetException();
         }
 
