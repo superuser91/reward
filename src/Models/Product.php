@@ -97,11 +97,15 @@ class Product extends Model implements ProductContract
                 'extras' => $data
             ]);
 
+            $delivered = null;
             if ($this->purchaseable instanceof Deliverable) {
-                $this->purchaseable->deliver($player, $data);
+                $delivered = $this->purchaseable->deliver($player, $data);
             }
 
-            return $transaction;
+            return [
+                'transaction' => $transaction,
+                'delivered' => $delivered
+            ];
         });
     }
 
