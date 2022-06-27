@@ -48,7 +48,7 @@ class ExportLog extends Command
             })
             ->when($this->argument('type'), function ($q) {
                 $q->whereHas('product', function ($product) {
-                    $product->where('type', $this->argument('type'));
+                    $product->where('purchaseable_type', $this->argument('type'));
                 });
             })
             ->when($this->argument('date'), function ($q) {
