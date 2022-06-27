@@ -11,15 +11,18 @@ use Illuminate\Validation\ValidationException;
 use Vgplay\Contracts\Deliverable;
 use Vgplay\Contracts\Player;
 use Vgplay\Contracts\Product as ProductContract;
+use Vgplay\LaravelRedisModel\Contracts\Cacheable;
+use Vgplay\LaravelRedisModel\HasCache;
 use Vgplay\Reward\Exceptions\BoughtCountLimitExceededException;
 use Vgplay\Reward\Exceptions\ProductNotAvailableYetException;
 use Vgplay\Reward\Exceptions\ProductOutOfStockException;
 use Vgplay\Reward\Exceptions\ViolateConditionException;
 
-class Product extends Model implements ProductContract
+class Product extends Model implements ProductContract, Cacheable
 {
     use HasFactory;
     use SoftDeletes;
+    use HasCache;
 
     protected $fillable = [
         'shop_id',

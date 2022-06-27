@@ -31,6 +31,20 @@
                     </div>
 
                     <div class="form-group">
+                      <label for="payment_unit">Đơn vị trao đổi</label>
+                      <select name="payment_unit" id="payment_unit" class="form-control">
+                          @foreach ($paymentUnits as $unit => $displayName)
+                              <option value="{{ $unit }}" @if($reward->payment_unit == $unit) selected @endif>{{ $displayName }}</option>
+                          @endforeach
+                      </select>
+                      @error('price')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                  </div>
+
+                    <div class="form-group">
                         <label for="limit">Số lần đổi</label>
                         <input type="number" class="form-control @error('limit') is-invalid @enderror" id="limit"
                             name="limit" aria-describedby="limit" placeholder="Số lần đổi phần thưởng này"
@@ -81,20 +95,7 @@
 
                     </div>
 
-                    {{-- <div class="custom-control custom-checkbox my-3">
-                        <input type="checkbox" class="custom-control-input" id="is_personal" name="is_personal"
-                            @if (old('is_personal', $reward->is_personal)) checked @endif>
-                        <label class="custom-control-label" for="is_personal">
-                            Nhận quà theo mốc điểm cá nhân.
-                        </label>
-                        @error('is_personal')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div> --}}
-
-                    <div class="custom-control custom-checkbox my-3">
+                     <div class="custom-control custom-checkbox my-3">
                       <input type="checkbox" class="custom-control-input" id="is_publish" name="is_publish"
                           @if (old('is_publish', $reward->is_publish)) checked @endif>
                       <label class="custom-control-label" for="is_publish">

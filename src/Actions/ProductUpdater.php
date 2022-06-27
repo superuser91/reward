@@ -22,7 +22,7 @@ class ProductUpdater
             'name' => 'required|string|max:191',
             'picture' => 'nullable|string|max:2048',
             'price' => 'required|integer',
-            'payment_unit' => 'exclude',
+            'payment_unit' => 'required|in:' . implode(',', array_keys(config('vgplay.products.payment_units', []))),
             'conditions' => 'nullable|array',
             'stats' => 'exclude',
             'limit' => 'nullable|integer',

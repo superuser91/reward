@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "laravel/framework": "^6|^7|^8",
-        "vgplay/contracts": "^1"
+        "vgplay/contracts": "^1",
+        "vgplay/laravel-redis-model": "^1"
     },
     "license": "MIT",
     "autoload": {

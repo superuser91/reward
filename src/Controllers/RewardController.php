@@ -2,12 +2,15 @@
 
 namespace Vgplay\Reward\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Vgplay\LaravelRedisModel\Contracts\Cacheable;
 use Vgplay\Reward\Actions\ProductCreater;
 use Vgplay\Reward\Actions\ProductUpdater;
 use Vgplay\Reward\Models\Product;
+use Vgplay\Reward\Models\Shop;
 
 class RewardController
 {
@@ -31,9 +34,21 @@ class RewardController
     {
         $this->authorize('create', Product::class);
 
-        $rewardables = collect([]);
+        $types = config('vgplay.products.rewardables');
+        $paymentUnits = config('vgplay.products.payment_units');
 
-        return view('vgplay::rewards.create', compact('rewardables'));
+        $rewardables = collect([]);
+        foreach ($types as $type) {
+            if (in_array(Cacheable::class, class_implements($type))) {
+                $rewardables->push(...$type::fromCache()->all());
+            } elseif (in_array(Model::class, class_implements($type))) {
+                $rewardables->push(...$type::all());
+            }
+        }
+
+        $shops = Shop::fromCache()->all();
+
+        return view('vgplay::rewards.create', compact('rewardables', 'shops', 'paymentUnits'));
     }
 
     public function store(Request $request, ProductCreater $creater)
@@ -62,7 +77,9 @@ class RewardController
 
         $this->authorize('update', $reward);
 
-        return view('vgplay::rewards.edit', compact('reward', 'rewardables'));
+        $paymentUnits = config('vgplay.products.payment_units');
+
+        return view('vgplay::rewards.edit', compact('reward', 'rewardables', 'paymentUnits'));
     }
 
     public function update(Request $request, ProductUpdater $updater, $id)

@@ -17,8 +17,7 @@ class ProductCreater
 
     protected function validate(array $data): array
     {
-        $data['purchaseable_id'] = $data;
-        $data['purchaseable_type'] = 1;
+        $purchaseable = explode('::', $data['reward']);
 
         $validator = Validator::make($data, [
             'shop_id' => 'required|integer|exists:shops,id',
@@ -32,13 +31,23 @@ class ProductCreater
             'stock' => 'nullable|integer',
             'available_from' => 'nullable|date|before:available_to',
             'available_to' => 'nullable|date|after:available_from',
-            'is_personal' => 'nullable',
+            'is_personal' => 'exclude',
             'is_publish' => 'nullable',
+            'reward' => function ($val, $attr, $fail) use ($purchaseable) {
+                if (is_null($purchaseable[0]::find($purchaseable[1]))) {
+                    $fail("Không tìm thấy vật phẩm.");
+                }
+            }
         ]);
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
+
+        $data['purchaseable_type'] = $purchaseable[0];
+        $data['purchaseable_id'] = $purchaseable[1];
+        $data['is_personal'] = isset($data['is_personal']) ? 1 : 0;
+        $data['is_publish'] = isset($data['is_publish']) ? 1 : 0;
 
         return $data;
     }

@@ -8,9 +8,23 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Tên giải thưởng</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                            aria-describedby="name" placeholder="Tên" value="{{ old('name') }}" required>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
+                            name="name" aria-describedby="name" placeholder="Tên" value="{{ old('name') }}" required>
                         @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shop_id">Thuộc cửa hàng</label>
+                        <select name="shop_id" id="shop_id" class="form-control">
+                            @foreach ($shops as $shop)
+                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('shop_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -47,6 +61,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="payment_unit">Đơn vị trao đổi</label>
+                        <select name="payment_unit" id="payment_unit" class="form-control">
+                            @foreach ($paymentUnits as $unit => $displayName)
+                                <option value="{{ $unit }}">{{ $displayName }}</option>
+                            @endforeach
+                        </select>
+                        @error('price')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="limit">Số lần đổi</label>
                         <input type="number" class="form-control @error('limit') is-invalid @enderror" id="limit"
                             name="limit" aria-describedby="limit" placeholder="Số lần đổi phần thưởng này"
@@ -58,6 +86,29 @@
                         @enderror
                     </div>
 
+                    <div class="form-group">
+                        <label for="available_from">Thời gian bắt đầu đổi</label>
+                        <input type="text" class="form-control @error('available_from') is-invalid @enderror"
+                            id="available_from" name="available_from" aria-describedby="available_from"
+                            value="{{ old('available_from') }}">
+                        @error('available_from')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="available_to">Hạn cuối để đổi</label>
+                        <input type="text" class="form-control @error('available_to') is-invalid @enderror"
+                            id="available_to" name="available_to" aria-describedby="available_to"
+                            value="{{ old('available_to') }}">
+                        @error('available_to')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
 
                     <div class="form-group">
                         <label for="picture">Ảnh minh hoạ</label>
@@ -74,12 +125,12 @@
                     </div>
 
                     <div class="custom-control custom-checkbox my-3">
-                        <input type="checkbox" class="custom-control-input" id="is_personal" name="is_personal"
-                            @if (old('is_personal')) checked @endif>
-                        <label class="custom-control-label" for="is_personal">
-                            Nhận quà theo mốc điểm cá nhân.
+                        <input type="checkbox" class="custom-control-input" id="is_publish" name="is_publish"
+                            @if (old('is_publish')) checked @endif>
+                        <label class="custom-control-label" for="is_publish">
+                            Publish
                         </label>
-                        @error('is_personal')
+                        @error('is_publish')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

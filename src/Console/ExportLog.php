@@ -62,7 +62,7 @@ class ExportLog extends Command
 
         $fp = fopen(storage_path($filename = 'export_log.csv'), 'w');
         fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
-        fputcsv($fp, ['Time', 'GAME ID', 'VGP ID', 'Item', 'Số lượng', 'Server', 'ID Nhân vật', 'Tên nhân vật']);
+        fputcsv($fp, ['Time', 'GAME ID', 'VGP ID', 'Item', 'Số lượng', 'Giá mua', 'Server', 'ID Nhân vật', 'Tên nhân vật']);
 
         foreach ($transactions as $transaction) {
             fputcsv($fp, [
@@ -71,6 +71,7 @@ class ExportLog extends Command
                 $transaction->user_id,
                 $transaction->product->name,
                 $transaction->quantity,
+                $transaction->amount . ' ' . $transaction->payment_unit,
                 isset($transaction->extras['server']['id']) ?  $transaction->extras['server']['id'] : '--',
                 isset($transaction->extras['character']['id']) ?  $transaction->extras['character']['id'] : '--',
                 isset($transaction->extras['character']['name']) ?  $transaction->extras['character']['name'] : '--',
