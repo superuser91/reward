@@ -48,7 +48,7 @@
                         <label for="limit">Số lần đổi</label>
                         <input type="number" class="form-control @error('limit') is-invalid @enderror" id="limit"
                             name="limit" aria-describedby="limit" placeholder="Số lần đổi phần thưởng này"
-                            value="{{ old('limit', $reward->limit) }}" required>
+                            value="{{ old('limit', $reward->limit) }}">
                         @error('limit')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
