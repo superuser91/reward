@@ -2,10 +2,10 @@
 
 namespace Vgplay\Reward\Models;
 
+use Hacoidev\CachingModel\Contracts\Cacheable;
+use Hacoidev\CachingModel\HasCache;
 use Vgplay\Reward\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Vgplay\LaravelRedisModel\Contracts\Cacheable;
-use Vgplay\LaravelRedisModel\HasCache;
 
 class Shop extends Model implements Cacheable
 {

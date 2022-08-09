@@ -5,7 +5,8 @@
     "require": {
         "laravel/framework": "^6|^7|^8",
         "vgplay/contracts": "^1",
-        "vgplay/laravel-redis-model": "^1"
+        "hacoidev/laravel-caching-model": "^1.0",
+        "hacoidev/crud": "^1"
     },
     "license": "MIT",
     "autoload": {

@@ -2,6 +2,8 @@
 
 namespace Vgplay\Reward\Models;
 
+use Hacoidev\CachingModel\Contracts\Cacheable;
+use Hacoidev\CachingModel\HasCache;
 use Vgplay\Reward\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,8 +13,6 @@ use Illuminate\Validation\ValidationException;
 use Vgplay\Contracts\Deliverable;
 use Vgplay\Contracts\Player;
 use Vgplay\Contracts\Product as ProductContract;
-use Vgplay\LaravelRedisModel\Contracts\Cacheable;
-use Vgplay\LaravelRedisModel\HasCache;
 use Vgplay\Reward\Exceptions\BoughtCountLimitExceededException;
 use Vgplay\Reward\Exceptions\ProductNotAvailableYetException;
 use Vgplay\Reward\Exceptions\ProductOutOfStockException;
